@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>التريكس - A+ GAMES | من صنع علاءالدين الصياد</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #062116;
+            color: #f8fafc;
+        }
+
+        /* خلفية طاولة الديوانية المخملية */
+        .velvet-table {
+            background: radial-gradient(circle at 50% 45%, #15603e 0%, #0d422a 55%, #062116 100%);
+            box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.85);
+        }
+
+        .table-border {
+            border: 6px solid #4a2c11;
+            box-shadow: 0 0 0 3px #d4af37, inset 0 0 30px rgba(0,0,0,0.7);
+        }
+
+        /* تأثيرات شاشة البداية A+ GAMES */
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5)); }
+            50% { transform: scale(1.04); filter: drop-shadow(0 0 35px rgba(59, 130, 246, 0.8)); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-logo {
+            animation: logoPulse 3s infinite ease-in-out;
+        }
+
+        .animate-fade-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* تصميم أوراق اللعب */
+        .playing-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 10px;
+            box-shadow: -2px 4px 10px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255,255,255,0.9);
+            transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, filter 0.2s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .playing-card.playable {
+            box-shadow: 0 0 15px 3px rgba(250, 204, 21, 0.85), -2px 6px 14px rgba(0,0,0,0.6);
+            border: 2px solid #eab308;
+        }
+
+        .playing-card.playable:hover, .playing-card.playable:active {
+            transform: translateY(-18px) scale(1.06) !important;
+            z-index: 50 !important;
+        }
+
+        .playing-card.unplayable {
+            filter: brightness(0.72) saturate(0.8);
+            cursor: not-allowed;
+        }
+
+        .card-back {
+            background: repeating-linear-gradient(
+                45deg,
+                #1e3a8a,
+                #1e3a8a 6px,
+                #1d4ed8 6px,
+                #1d4ed8 12px
+            );
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+        }
+
+        /* حركة رمي الورقة للمنتصف */
+        @keyframes cardThrow {
+            0% { transform: scale(1.25) translateY(30px); opacity: 0.4; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .card-thrown {
+            animation: cardThrow 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-between select-none">
+
+    <!-- ==================== 1. شاشة البداية (Splash Screen - A+ GAMES) ==================== -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-between bg-gradient-to-b from-slate-950 via-[#071929] to-slate-950 p-6 transition-opacity duration-700">
+        <div class="w-full flex justify-between items-center opacity-70 text-xs text-amber-300/80">
+            <span>إصدار البطولات الاحترافي v2.5</span>
+            <span>TRIX CHAMPIONSHIP</span>
+        </div>
+
+        <!-- شعار استوديو A+ GAMES -->
+        <div class="flex flex-col items-center text-center my-auto animate-fade-up">
+            <div class="relative mb-6 animate-logo">
+                <!-- رسم SVG احترافي لشعار A+ GAMES -->
+                <svg width="170" height="170" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FDE047"/>
+                            <stop offset="50%" stop-color="#D97706"/>
+                            <stop offset="100%" stop-color="#FEF08A"/>
+                        </linearGradient>
+                        <linearGradient id="blueGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#1D4ED8"/>
+                            <stop offset="50%" stop-color="#38BDF8"/>
+                            <stop offset="100%" stop-color="#818CF8"/>
+                        </linearGradient>
+                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="6" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+                    <!-- درع سداسي خارجي -->
+                    <polygon points="100,10 180,55 180,145 100,190 20,145 20,55" fill="#0F172A" stroke="url(#goldGrad)" stroke-width="5"/>
+                    <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" fill="none" stroke="url(#blueGrad)" stroke-width="2" opacity="0.6"/>
+                    <!-- حرف A المعدني -->
+                    <path d="M52 142 L84 56 H102 L134 142 H114 L107 122 H79 L72 142 H52 Z M84 106 H102 L93 78 L84 106 Z" fill="url(#goldGrad)" filter="url(#glow)"/>
+                    <!-- علامة + النيون الزرقاء -->
+                    <rect x="134" y="64" width="12" height="38" rx="3" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <rect x="121" y="77" width="38" height="12" rx="3" fill="url(#blueGrad)" filter="url(#glow)"/>
+                </svg>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-200 drop-shadow-md">
+                A+ GAMES
+            </h1>
+            <p class="text-sky-300 text-sm sm:text-base font-bold tracking-widest mt-1 uppercase">
+                استوديو إي بلس للألعاب التفاعلية
+            </p>
+
+            <div class="mt-8 flex flex-col items-center gap-3">
+                <button onclick="enterMainMenu()" class="px-10 py-3.5 rounded-full bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-lg shadow-[0_0_25px_rgba(245,158,11,0.6)] transform transition active:scale-95 flex items-center gap-2">
+                    <span>ابدأ اللعب الآن</span>
+                    <span class="text-xl">♠️</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- التوقيع السفلي الثابت -->
+        <div class="w-full text-center pb-2">
+            <div class="inline-block px-5 py-1.5 rounded-full bg-white/5 border border-amber-400/30 backdrop-blur-sm">
+                <p class="text-amber-300 font-extrabold text-sm sm:text-base tracking-wide">
+                    ✨ من صنع علاءالدين الصياد ✨
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. القائمة الرئيسية واختيار وضع اللعب ==================== -->
+    <div id="main-menu" class="hidden fixed inset-0 z-40 velvet-table flex flex-col justify-between p-4 sm:p-6 overflow-y-auto">
+        <!-- ترويسة القائمة -->
+        <header class="flex items-center justify-between max-w-4xl w-full mx-auto bg-black/35 backdrop-blur-md px-4 py-3 rounded-2xl border border-amber-500/30">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-black text-lg shadow">
+                    A+
+                </div>
+                <div>
+                    <h2 class="font-black text-lg sm:text-xl text-amber-300 leading-tight">لعبة التريكس الملكية</h2>
+                    <p class="text-xs text-emerald-200/80">قوانين الممالك الخمس الأصلية</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSound()" id="sound-btn-menu" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-300 transition" title="كتم/تشغيل الصوت">
+                    🔊
+                </button>
+                <button onclick="openRulesModal()" class="px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-xs sm:text-sm font-bold transition">
+                    📖 القوانين
+                </button>
+            </div>
+        </header>
+
+        <!-- بطاقات أوضاع اللعب -->
+        <main class="max-w-4xl w-full mx-auto my-auto py-4">
+            <!-- اسم اللاعب -->
+            <div class="mb-5 bg-black/30 p-3.5 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2 text-emerald-200 font-bold text-sm">
+                    <span>👤 اسمك على الطاولة:</span>
+                </div>
+                <input type="text" id="player-name-input" value="علاء الدين" maxlength="16"
+                    class="w-full sm:w-64 px-4 py-2 rounded-xl bg-slate-900/80 border border-amber-400/40 text-amber-200 font-bold text-center focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- الوضع 1: اللعب الفردي ضد الذكاء الاصطناعي -->
+                <div class="bg-gradient-to-b from-emerald-900/90 to-slate-900/95 rounded-2xl p-5 border-2 border-emerald-500/40 hover:border-amber-400 transition shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-2xl mb-3">
+                            🤖
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">اللعب الفردي (أوفلاين)</h3>
+                        <p class="text-xs text-emerald-200/80 leading-relaxed mb-4">
+                            العب فوراً بدون إنترنت ضد 3 لاعبين بالذكاء الاصطناعي المتطور مع حساب تلقائي للممالك.
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <select id="ai-kingdom-count" class="w-full bg-slate-950/70 border border-emerald-500/30 rounded-xl px-3 py-2 text-xs text-amber-200 font-bold">
+                            <option value="1">مملكة سريعة واحدة (5 جولات)</option>
+                            <option value="4" selected>بطولة كاملة (4 ممالك - 20 جولة)</option>
+                        </select>
+                        <button onclick="startSinglePlayer()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-sm shadow-lg transition transform active:scale-95">
+                            العب الآن ⚡
+                        </button>
+                    </div>
+                </div>
+
+                <!-- الوضع 2: اللعب أونلاين مع الأصدقاء (الإنترنت العادي) -->
+                <div class="bg-gradient-to-b from-blue-950/90 to-slate-900/95 rounded-2xl p-5 border-2 border-sky-500/40 hover:border-amber-400 transition shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-2xl mb-3">
+                            🌐
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">أونلاين مع الأصدقاء</h3>
+                        <p class="text-xs text-sky-200/80 leading-relaxed mb-4">
+                            أنشئ غرفة برمز خاص أو شارك الرابط مع أصدقائك عبر الإنترنت، ويمكن إكمال المقاعد الفارغة بالذكاء الاصطناعي.
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="openOnlineLobby()" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-sm shadow-lg transition transform active:scale-95">
+                            إنشاء / دخول غرفة 🌍
+                        </button>
+                    </div>
+                </div>
+
+                <!-- الوضع 3: بدون إنترنت مع الأصدقاء (بلوتوث / نقطة اتصال / تمرير الجهاز) -->
+                <div class="bg-gradient-to-b from-amber-950/85 to-slate-900/95 rounded-2xl p-5 border-2 border-amber-500/40 hover:border-amber-300 transition shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-2xl mb-3">
+                            📡
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">بدون إنترنت مع الأصدقاء</h3>
+                        <p class="text-xs text-amber-200/80 leading-relaxed mb-4">
+                            العب بدون إنترنت عبر <b>البلوتوث / نقطة الاتصال المحلية (WebRTC)</b> بين جهازين، أو <b>تمرير الهاتف</b> على نفس الجهاز!
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="openOfflineFriendsModal()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-sm shadow-lg transition transform active:scale-95">
+                            بلوتوث / لعب محلي 📲
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- التوقيع السفلي -->
+        <footer class="text-center py-2">
+            <span class="text-xs sm:text-sm font-bold text-amber-300/90 bg-black/40 px-4 py-1.5 rounded-full border border-amber-500/25">
+                A+ GAMES • من صنع علاءالدين الصياد
+            </span>
+        </footer>
+    </div>
+
+    <!-- ==================== 3. نافذة اللعب أونلاين (غرفة الإنترنت العادي) ==================== -->
+    <div id="online-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-sky-500/50 rounded-3xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-black text-sky-400 flex items-center gap-2">
+                    <span>🌐 غرفة اللعب أونلاين</span>
+                </h3>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-xl font-bold">✕</button>
+            </div>
+
+            <div class="bg-slate-800/80 p-4 rounded-2xl border border-white/10 mb-4 text-center">
+                <p class="text-xs text-slate-300 mb-1">رمز الغرفة الخاص بك (أرسله لأصدقائك):</p>
+                <div class="flex items-center justify-center gap-2 my-2">
+                    <span id="room-code-display" class="text-3xl font-black tracking-widest text-amber-400 bg-slate-950 px-5 py-2 rounded-xl border border-amber-500/30">TRIX</span>
+                    <button onclick="copyRoomInvite()" class="px-3 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold">
+                        نسخ الرابط 📋
+                    </button>
+                </div>
+                <p id="copy-feedback" class="text-xs text-emerald-400 h-4"></p>
+            </div>
+
+            <!-- قائمة اللاعبين في الغرفة -->
+            <div class="mb-4">
+                <p class="text-xs font-bold text-slate-300 mb-2">اللاعبون المتصلون على الطاولة (4 مقاعد):</p>
+                <div id="online-seats-list" class="space-y-2 text-sm">
+                    <!-- يتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+
+            <!-- الانضمام لغرفة صديق -->
+            <div class="flex gap-2 mb-4">
+                <input type="text" id="join-room-input" placeholder="أدخل رمز غرفة صديقك..." maxlength="6"
+                    class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-center uppercase font-bold text-white focus:outline-none focus:border-sky-400">
+                <button onclick="joinExistingRoom()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs">
+                    انضمام
+                </button>
+            </div>
+
+            <button onclick="startOnlineGame()" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-slate-950 font-black text-base shadow-lg">
+                بدء المباراة الآن (إكمال المقاعد بالبوت) 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== 4. نافذة اللعب بدون إنترنت (بلوتوث / نقطة اتصال / تمرير الهاتف) ==================== -->
+    <div id="offline-friends-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl max-w-lg w-full p-6 shadow-2xl my-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-black text-amber-400 flex items-center gap-2">
+                    <span>📡 اللعب بدون إنترنت مع الأصدقاء</span>
+                </h3>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-xl font-bold">✕</button>
+            </div>
+
+            <!-- تبويبات الاختيار -->
+            <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-2xl mb-4">
+                <button onclick="switchOfflineTab('passplay')" id="tab-passplay" class="py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs sm:text-sm transition">
+                    📱 تمرير الجهاز (نفس الهاتف)
+                </button>
+                <button onclick="switchOfflineTab('bluetooth')" id="tab-bluetooth" class="py-2 rounded-xl text-slate-300 hover:text-white font-bold text-xs sm:text-sm transition">
+                    📶 بلوتوث / نقطة اتصال (P2P)
+                </button>
+            </div>
+
+            <!-- محتوى تبويب 1: تمرير الجهاز (Pass & Play) -->
+            <div id="panel-passplay" class="space-y-3">
+                <p class="text-xs text-slate-300 leading-relaxed bg-white/5 p-3 rounded-xl">
+                    العب مع أصدقائك على نفس الهاتف أو التابلت بدون أي اتصال. تظهر شاشة حماية بين كل دور وأخر لإخفاء الأوراق!
+                </p>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-20 text-amber-300 font-bold">اللاعب 1:</span>
+                        <input type="text" id="pp-p0" value="علاء الدين" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-20 text-emerald-300 font-bold">اللاعب 2:</span>
+                        <input type="text" id="pp-p1" value="أحمد" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-20 text-sky-300 font-bold">اللاعب 3:</span>
+                        <select id="pp-p2-type" onchange="togglePPInput(2)" class="bg-slate-800 text-xs rounded-lg px-2 py-1.5 text-amber-200">
+                            <option value="human">صديق</option>
+                            <option value="ai">ذكاء اصطناعي</option>
+                        </select>
+                        <input type="text" id="pp-p2" value="سارة" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-20 text-purple-300 font-bold">اللاعب 4:</span>
+                        <select id="pp-p3-type" onchange="togglePPInput(3)" class="bg-slate-800 text-xs rounded-lg px-2 py-1.5 text-amber-200">
+                            <option value="human">صديق</option>
+                            <option value="ai" selected>ذكاء اصطناعي</option>
+                        </select>
+                        <input type="text" id="pp-p3" value="كمبيوتر" disabled class="flex-1 bg-slate-950/40 border border-slate-800 rounded-xl px-3 py-1.5 text-sm text-slate-500">
+                    </div>
+                </div>
+                <button onclick="startPassAndPlay()" class="w-full py-3 mt-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-sm shadow-lg">
+                    ابدأ اللعب الجماعي على الجهاز 🎮
+                </button>
+            </div>
+
+            <!-- محتوى تبويب 2: بلوتوث / نقطة اتصال محلية بدون إنترنت (WebRTC Offline Handshake) -->
+            <div id="panel-bluetooth" class="hidden space-y-3">
+                <div class="bg-sky-950/60 border border-sky-500/30 p-3 rounded-xl text-xs text-sky-200 leading-relaxed">
+                    <b>كيف تعمل ميزة البلوتوث / الربط المباشر بدون إنترنت؟</b><br>
+                    افتح نقطة اتصال (Hotspot) أو مشاركة البلوتوث (Bluetooth Tethering) بين الهاتفين بدون بيانات إنترنت، ثم تبادلا رمز الربط المباشر أدناه:
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="createOfflineHostOffer()" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">
+                        1️⃣ إنشاء استضافة (المضيف)
+                    </button>
+                    <button onclick="prepareOfflineJoin()" class="py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs">
+                        2️⃣ الانضمام لصديق (الضيف)
+                    </button>
+                </div>
+
+                <div id="webrtc-box" class="space-y-2 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <p id="webrtc-step-label" class="text-xs font-bold text-amber-300">اختر "إنشاء استضافة" على الجهاز الأول أو "الانضمام" على الثاني:</p>
+                    <textarea id="webrtc-local-code" readonly rows="2" placeholder="سيظهر رمز الربط الخاص بجهازك هنا..." class="w-full bg-slate-900 text-[10px] text-emerald-300 p-2 rounded-lg border border-slate-700 font-mono"></textarea>
+                    <div class="flex gap-2">
+                        <button onclick="copyWebRTCCode()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-white font-bold">نسخ الرمز 📋</button>
+                        <span id="bt-status" class="text-xs text-amber-400 my-auto font-bold">في انتظار الربط...</span>
+                    </div>
+                    <textarea id="webrtc-remote-code" rows="2" placeholder="الصق رمز جهاز صديقك هنا..." class="w-full bg-slate-900 text-[10px] text-white p-2 rounded-lg border border-slate-700 font-mono"></textarea>
+                    <button onclick="completeWebRTCHandshake()" class="w-full py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs">
+                        تأكيد الربط المباشر وبدء اللعب 🔗
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 5. ساحة اللعب الرئيسية (Game Table) ==================== -->
+    <div id="game-screen" class="hidden fixed inset-0 z-30 velvet-table flex flex-col justify-between overflow-hidden">
+        
+        <!-- الشريط العلوي للمعلومات -->
+        <div class="flex items-center justify-between px-3 py-2 bg-black/45 backdrop-blur-md border-b border-amber-500/25 z-20">
+            <div class="flex items-center gap-2">
+                <button onclick="confirmExitGame()" class="px-2.5 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/35 border border-red-400/30 text-red-200 text-xs font-bold">
+                    خروج
+                </button>
+                <div class="bg-slate-900/80 px-3 py-1 rounded-xl border border-amber-400/30 flex items-center gap-2">
+                    <span class="text-xs text-slate-400">المملكة:</span>
+                    <span id="hud-kingdom" class="text-xs sm:text-sm font-black text-amber-300">1 / 4</span>
+                </div>
+            </div>
+
+            <!-- شارة العقد الحالي -->
+            <div id="hud-contract-badge" class="px-4 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-amber-500/30 to-amber-500/20 border border-amber-400/50 text-amber-200 font-black text-xs sm:text-sm shadow">
+                بانتظار اختيار العقد...
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openScoreboard()" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 text-xs font-bold flex items-center gap-1">
+                    <span>📊</span>
+                    <span class="hidden sm:inline">ورقة التسجيل</span>
+                </button>
+                <button onclick="toggleSound()" id="sound-btn-game" class="p-1.5 rounded-xl bg-white/10 text-amber-300 text-sm">
+                    🔊
+                </button>
+            </div>
+        </div>
+
+        <!-- منطقة الطاولة الوسطى واللاعبين الأربعة -->
+        <div class="relative flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2">
+            
+            <!-- اللاعب الشمالي (الأعلى - المقابل) -->
+            <div id="seat-2" class="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                <div class="player-badge px-3 py-1 rounded-full bg-slate-900/85 border border-white/15 flex items-center gap-2 shadow-lg transition-all" id="badge-2">
+                    <span class="text-sm">👤</span>
+                    <span class="text-xs font-bold text-white" id="name-2">الشمال</span>
+                    <span class="text-xs font-black text-amber-400" id="score-2">0</span>
+                </div>
+                <div id="hand-2" class="flex -space-x-4 space-x-reverse mt-1 h-9"></div>
+            </div>
+
+            <!-- اللاعب الشرقي (اليمين) -->
+            <div id="seat-1" class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                <div class="player-badge px-2.5 py-1 rounded-2xl bg-slate-900/85 border border-white/15 flex flex-col items-center shadow-lg transition-all" id="badge-1">
+                    <span class="text-xs font-bold text-white" id="name-1">اليمين</span>
+                    <span class="text-xs font-black text-amber-400" id="score-1">0</span>
+                </div>
+                <div id="hand-1" class="flex flex-col -space-y-5 mt-1"></div>
+            </div>
+
+            <!-- اللاعب الغربي (اليسار) -->
+            <div id="seat-3" class="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                <div class="player-badge px-2.5 py-1 rounded-2xl bg-slate-900/85 border border-white/15 flex flex-col items-center shadow-lg transition-all" id="badge-3">
+                    <span class="text-xs font-bold text-white" id="name-3">اليسار</span>
+                    <span class="text-xs font-black text-amber-400" id="score-3">0</span>
+                </div>
+                <div id="hand-3" class="flex flex-col -space-y-5 mt-1"></div>
+            </div>
+
+            <!-- منتصف الطاولة (إما ساحة الأكلات الأربع أو ساحة التريكس المتسلسلة) -->
+            <div id="center-arena" class="w-64 h-64 sm:w-80 sm:h-80 rounded-full border-2 border-amber-400/20 bg-black/20 flex items-center justify-center relative shadow-inner">
+                <!-- رسالة حالة اللعب -->
+                <div id="table-status-toast" class="absolute -top-8 bg-black/75 text-amber-300 text-xs font-bold px-4 py-1 rounded-full border border-amber-400/30 whitespace-nowrap transition-opacity">
+                    جاري توزيع الأوراق...
+                </div>
+
+                <!-- منطقة اللطوش (4 أوراق في المنتصف) -->
+                <div id="trick-area" class="relative w-full h-full">
+                    <div id="played-card-2" class="absolute top-3 left-1/2 -translate-x-1/2"></div>
+                    <div id="played-card-1" class="absolute right-4 top-1/2 -translate-y-1/2"></div>
+                    <div id="played-card-0" class="absolute bottom-3 left-1/2 -translate-x-1/2"></div>
+                    <div id="played-card-3" class="absolute left-4 top-1/2 -translate-y-1/2"></div>
+                </div>
+
+                <!-- منطقة عقد التريكس (4 صفوف للأشكال الأربعة) -->
+                <div id="trex-board" class="hidden w-[92vw] max-w-xl bg-slate-950/85 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border-2 border-amber-400/40 shadow-2xl z-20">
+                    <div class="grid grid-cols-4 gap-1.5 sm:gap-2 text-center" id="trex-columns">
+                        <!-- يتم توليد أعمدة الكبة، الديناري، السباتي، البستوني هنا -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- منطقة اللاعب الجنوبي (أنت / اللاعب النشط) -->
+        <div class="w-full flex flex-col items-center pb-2 pt-1 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20">
+            <!-- شريط معلومات اللاعب السفلي وزر التمرير في التريكس -->
+            <div class="flex items-center justify-between w-full max-w-2xl px-4 mb-1.5">
+                <div class="player-badge px-3 py-1 rounded-full bg-slate-900/90 border border-amber-400/40 flex items-center gap-2 shadow" id="badge-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs sm:text-sm font-black text-white" id="name-0">علاء الدين</span>
+                    <span class="text-xs sm:text-sm font-black text-amber-400" id="score-0">0</span>
+                </div>
+
+                <button id="trex-pass-btn" onclick="humanPassTrex()" class="hidden px-4 py-1.5 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-lg animate-bounce">
+                    تمرير الدور (لا توجد ورقة) ⏭️
+                </button>
+
+                <div class="text-[11px] text-amber-200/80 font-bold hidden sm:block">
+                    من صنع علاءالدين الصياد
+                </div>
+            </div>
+
+            <!-- مروحة أوراق اللاعب -->
+            <div id="player-hand" class="flex items-center justify-center h-28 sm:h-36 px-2 w-full max-w-4xl overflow-visible">
+                <!-- الأوراق تُرسم هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 6. نافذة اختيار المملكة / العقد (Kingdom Selection Modal) ==================== -->
+    <div id="contract-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-3xl max-w-md w-full p-5 shadow-2xl text-center">
+            <div class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold mb-2">
+                👑 أنت صاحب المملكة الآن
+            </div>
+            <h3 class="text-xl sm:text-2xl font-black text-white mb-1">اختر العقد القادم</h3>
+            <p class="text-xs text-slate-300 mb-4">تبقى لك <span id="remaining-contracts-count" class="text-amber-400 font-bold">5</span> عقود في مملكتك</p>
+
+            <div class="grid grid-cols-1 gap-2.5" id="contract-options">
+                <!-- أزرار العقود الخمسة -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 7. ستار الخصوصية في وضع تمرير الهاتف (Pass & Play Curtain) ==================== -->
+    <div id="privacy-curtain" class="hidden fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-20 h-20 rounded-full bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-4xl mb-4 animate-bounce">
+            📱
+        </div>
+        <h3 class="text-2xl font-black text-amber-300 mb-2">مرّر الجهاز الآن إلى:</h3>
+        <p id="next-human-name" class="text-3xl font-black text-white bg-white/10 px-6 py-2 rounded-2xl border border-white/20 mb-6">
+            أحمد
+        </p>
+        <p class="text-xs text-slate-400 mb-6 max-w-xs">
+            تأكد من عدم نظر اللاعبين الآخرين إلى الشاشة قبل كشف أوراقك.
+        </p>
+        <button onclick="revealNextHumanHand()" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-lg shadow-xl">
+            أنا جاهز - اكشف أوراقي 👁️
+        </button>
+    </div>
+
+    <!-- ==================== 8. نافذة ورقة التسجيل (Scoreboard Modal) ==================== -->
+    <div id="scoreboard-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl max-w-xl w-full p-5 shadow-2xl">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-black text-amber-400">📊 ورقة التسجيل والنتائج</h3>
+                <button onclick="closeScoreboard()" class="text-slate-400 hover:text-white text-xl font-bold">✕</button>
+            </div>
+
+            <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-700">
+                <table class="w-full text-center text-xs sm:text-sm border-collapse">
+                    <thead class="bg-slate-800 text-amber-300 sticky top-0">
+                        <tr>
+                            <th class="p-2.5 border-b border-slate-700">العقد</th>
+                            <th class="p-2.5 border-b border-slate-700" id="sb-p0">اللاعب 1</th>
+                            <th class="p-2.5 border-b border-slate-700" id="sb-p1">اللاعب 2</th>
+                            <th class="p-2.5 border-b border-slate-700" id="sb-p2">اللاعب 3</th>
+                            <th class="p-2.5 border-b border-slate-700" id="sb-p3">اللاعب 4</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreboard-body" class="divide-y divide-slate-800 text-slate-200">
+                        <!-- سجل الجولات -->
+                    </tbody>
+                    <tfoot class="bg-slate-950 font-black text-amber-400 border-t-2 border-amber-500/40">
+                        <tr>
+                            <td class="p-2.5">المجموع</td>
+                            <td class="p-2.5" id="sb-tot0">0</td>
+                            <td class="p-2.5" id="sb-tot1">0</td>
+                            <td class="p-2.5" id="sb-tot2">0</td>
+                            <td class="p-2.5" id="sb-tot3">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div id="game-over-banner" class="hidden mt-4 p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-amber-500/20 border border-amber-400 text-center">
+                <p class="text-lg font-black text-amber-300 mb-1" id="winner-announcement">🏆 الفائز بالبطولة!</p>
+                <p class="text-xs text-slate-300 mb-3">A+ GAMES • من صنع علاءالدين الصياد</p>
+                <button onclick="returnToMenu()" class="px-6 py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-sm">
+                    العودة للقائمة الرئيسية
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 9. نافذة قوانين التريكس ==================== -->
+    <div id="rules-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/40 rounded-3xl max-w-lg w-full p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-black text-amber-400">📖 قوانين لعبة التريكس</h3>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-xl font-bold">✕</button>
+            </div>
+            <div class="space-y-2.5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <p><b class="text-amber-300">نظام الممالك:</b> تتكون اللعبة من 4 ممالك (مملكة لكل لاعب). يبدأ صاحب ورقة <b>7 الكبة (7♥)</b> باختيار عقود مملكته الخمسة واحداً تلو الآخر:</p>
+                <ul class="list-disc pr-5 space-y-1.5">
+                    <li><b class="text-red-400">اللطوش (Collections):</b> كل أكلة (لطشة) يأخذها اللاعب تُحسب عليه بـ <b>-15 نقطة</b>.</li>
+                    <li><b class="text-pink-400">البنات (Queens):</b> كل بنت (Q) يأخذها اللاعب تُحسب عليه بـ <b>-25 نقطة</b>.</li>
+                    <li><b class="text-amber-400">الديناري (Diamonds):</b> كل ورقة من نوع الديناري (♦) يأخذها اللاعب تُحسب عليه بـ <b>-10 نقاط</b>.</li>
+                    <li><b class="text-rose-500">شيخ الكبة (King of Hearts):</b> اللاعب الذي يأخذ شايب الكبة (K♥) يخسر <b>-75 نقطة</b>.</li>
+                    <li><b class="text-emerald-400">التريكس (Trex):</b> تبدأ بوضع الولد (J) على الطاولة ثم البناء تصاعدياً حتى الآس (A) وتنازلياً حتى (2). الأول يربح <b>+200</b>، الثاني <b>+150</b>، الثالث <b>+100</b>، والرابع <b>+50</b>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة تنبيه مخصصة (بديل alert) -->
+    <div id="custom-toast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 border border-amber-400 text-amber-200 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold shadow-2xl">
+    </div>
+
+    <script>
+        /* ==================== نظام المؤثرات الصوتية (Web Audio API) ==================== */
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playTone(freq, type = 'sine', duration = 0.12, vol = 0.15) {
+            if (!soundEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function sfxCardPlay() {
+            playTone(320, 'triangle', 0.08, 0.2);
+            setTimeout(() => playTone(480, 'sine', 0.06, 0.1), 30);
+        }
+
+        function sfxTrickWin() {
+            playTone(523.25, 'sine', 0.15, 0.15);
+            setTimeout(() => playTone(659.25, 'sine', 0.2, 0.15), 90);
+        }
+
+        function sfxPenalty() {
+            playTone(190, 'sawtooth', 0.25, 0.14);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = soundEnabled ? '🔊' : '🔇';
+            document.getElementById('sound-btn-menu').textContent = icon;
+            document.getElementById('sound-btn-game').textContent = icon;
+            showToast(soundEnabled ? 'تم تفعيل المؤثرات الصوتية' : 'تم كتم الصوت');
+        }
+
+        /* ==================== ثوابت وهياكل بيانات لعبة التريكس ==================== */
+        const SUITS = [
+            { id: 'hearts', symbol: '♥', name: 'كبة', color: 'text-red-600' },
+            { id: 'diamonds', symbol: '♦', name: 'ديناري', color: 'text-red-600' },
+            { id: 'clubs', symbol: '♣', name: 'سباتي', color: 'text-slate-900' },
+            { id: 'spades', symbol: '♠', name: 'بستوني', color: 'text-slate-900' }
+        ];
+
+        const RANKS = [
+            { val: 2, label: '2' }, { val: 3, label: '3' }, { val: 4, label: '4' },
+            { val: 5, label: '5' }, { val: 6, label: '6' }, { val: 7, label: '7' },
+            { val: 8, label: '8' }, { val: 9, label: '9' }, { val: 10, label: '10' },
+            { val: 11, label: 'J' }, { val: 12, label: 'Q' }, { val: 13, label: 'K' },
+            { val: 14, label: 'A' }
+        ];
+
+        const CONTRACTS = [
+            { id: 'collections', name: 'اللطوش', icon: '🃏', desc: '-15 نقطة لكل أكلة', color: 'from-rose-600 to-red-800' },
+            { id: 'queens', name: 'البنات', icon: '👸', desc: '-25 نقطة لكل بنت (Q)', color: 'from-pink-600 to-purple-800' },
+            { id: 'diamonds', name: 'الديناري', icon: '♦️', desc: '-10 نقاط لكل ورقة ديناري', color: 'from-amber-600 to-orange-800' },
+            { id: 'king_hearts', name: 'شيخ الكبة', icon: '🤴', desc: '-75 نقطة لشايب الكبة (K♥)', color: 'from-red-700 to-rose-950' },
+            { id: 'trex', name: 'التريكس', icon: '👑', desc: 'ترتيب الأوراق من الولد (+200 للأول)', color: 'from-emerald-600 to-teal-800' }
+        ];
+
+        /* حالة اللعبة الشاملة */
+        let state = {
+            mode: 'single', // single | online | passplay | bluetooth
+            maxKingdoms: 4,
+            currentKingdomNum: 1,
+            kingdomOwner: 0,
+            usedContractsInKingdom: [],
+            currentContract: null,
+            players: [
+                { id: 0, name: 'علاء الدين', isHuman: true, hand: [], score: 0, roundScore: 0 },
+                { id: 1, name: 'خالد', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 2, name: 'طارق', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 3, name: 'ليلى', isHuman: false, hand: [], score: 0, roundScore: 0 }
+            ],
+            turn: 0,
+            activeHumanSeat: 0, // المقعد المعروض في الأسفل حالياً (يتغير في تمرير الهاتف)
+            trick: [], // [{ playerIndex, card }]
+            leadSuit: null,
+            tricksPlayed: 0,
+            trexState: {
+                hearts: { min: null, max: null },
+                diamonds: { min: null, max: null },
+                clubs: { min: null, max: null },
+                spades: { min: null, max: null }
+            },
+            trexFinishOrder: [],
+            history: [],
+            isBusy: false,
+            roomCode: 'TRIX',
+            channel: null,
+            rtcPeer: null,
+            rtcDataChannel: null
+        };
+
+        /* ==================== التنقل بين الشاشات ==================== */
+        function enterMainMenu() {
+            sfxCardPlay();
+            const splash = document.getElementById('splash-screen');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.classList.add('hidden');
+                document.getElementById('main-menu').classList.remove('hidden');
+                checkUrlRoomParam();
+            }, 600);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('custom-toast');
+            toast.textContent = msg;
+            toast.classList.remove('hidden');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.add('hidden'), 2800);
+        }
+
+        function closeModals() {
+            document.getElementById('online-modal').classList.add('hidden');
+            document.getElementById('offline-friends-modal').classList.add('hidden');
+            document.getElementById('rules-modal').classList.add('hidden');
+        }
+
+        function openRulesModal() {
+            document.getElementById('rules-modal').classList.remove('hidden');
+        }
+
+        function confirmExitGame() {
+            returnToMenu();
+        }
+
+        function returnToMenu() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('scoreboard-modal').classList.add('hidden');
+            document.getElementById('contract-modal').classList.add('hidden');
+            document.getElementById('privacy-curtain').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+        }
+
+        /* ==================== وضع اللعب الفردي ==================== */
+        function startSinglePlayer() {
+            const pName = document.getElementById('player-name-input').value.trim() || 'علاء الدين';
+            const kCount = parseInt(document.getElementById('ai-kingdom-count').value) || 4;
+
+            state.mode = 'single';
+            state.maxKingdoms = kCount;
+            state.players = [
+                { id: 0, name: pName, isHuman: true, hand: [], score: 0, roundScore: 0 },
+                { id: 1, name: 'سامي (AI)', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 2, name: 'نور (AI)', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 3, name: 'كريم (AI)', isHuman: false, hand: [], score: 0, roundScore: 0 }
+            ];
+            initMatch();
+        }
+
+        /* ==================== وضع تمرير الهاتف (Pass & Play بدون إنترنت) ==================== */
+        function openOfflineFriendsModal() {
+            document.getElementById('offline-friends-modal').classList.remove('hidden');
+            document.getElementById('pp-p0').value = document.getElementById('player-name-input').value.trim() || 'علاء الدين';
+        }
+
+        function switchOfflineTab(tab) {
+            const isPP = tab === 'passplay';
+            document.getElementById('panel-passplay').classList.toggle('hidden', !isPP);
+            document.getElementById('panel-bluetooth').classList.toggle('hidden', isPP);
+            document.getElementById('tab-passplay').className = isPP
+                ? 'py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs sm:text-sm transition'
+                : 'py-2 rounded-xl text-slate-300 hover:text-white font-bold text-xs sm:text-sm transition';
+            document.getElementById('tab-bluetooth').className = !isPP
+                ? 'py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs sm:text-sm transition'
+                : 'py-2 rounded-xl text-slate-300 hover:text-white font-bold text-xs sm:text-sm transition';
+        }
+
+        function togglePPInput(idx) {
+            const type = document.getElementById(`pp-p${idx}-type`).value;
+            const input = document.getElementById(`pp-p${idx}`);
+            input.disabled = (type === 'ai');
+            input.value = type === 'ai' ? 'كمبيوتر' : (idx === 2 ? 'سارة' : 'عمر');
+            input.classList.toggle('opacity-50', type === 'ai');
+        }
+
+        function startPassAndPlay() {
+            closeModals();
+            state.mode = 'passplay';
+            state.maxKingdoms = 4;
+            state.players = [
+                { id: 0, name: document.getElementById('pp-p0').value.trim() || 'اللاعب 1', isHuman: true, hand: [], score: 0, roundScore: 0 },
+                { id: 1, name: document.getElementById('pp-p1').value.trim() || 'اللاعب 2', isHuman: true, hand: [], score: 0, roundScore: 0 },
+                { id: 2, name: document.getElementById('pp-p2').value.trim() || 'اللاعب 3', isHuman: document.getElementById('pp-p2-type').value === 'human', hand: [], score: 0, roundScore: 0 },
+                { id: 3, name: document.getElementById('pp-p3').value.trim() || 'اللاعب 4', isHuman: document.getElementById('pp-p3-type').value === 'human', hand: [], score: 0, roundScore: 0 }
+            ];
+            initMatch();
+        }
+
+        /* ==================== وضع الربط المباشر بدون إنترنت (Bluetooth / Hotspot WebRTC) ==================== */
+        async function createOfflineHostOffer() {
+            try {
+                document.getElementById('webrtc-step-label').textContent = '1. انسخ هذا الرمز وأرسله لصديقك عبر البلوتوث أو الواي فاي المحلي:';
+                state.rtcPeer = new RTCPeerConnection({ iceServers: [] });
+                state.rtcDataChannel = state.rtcPeer.createDataChannel('trix-bt');
+                setupRTCChannel(state.rtcDataChannel, true);
+
+                state.rtcPeer.onicecandidate = (e) => {
+                    if (!e.candidate) {
+                        document.getElementById('webrtc-local-code').value = btoa(JSON.stringify(state.rtcPeer.localDescription));
+                    }
+                };
+                const offer = await state.rtcPeer.createOffer();
+                await state.rtcPeer.setLocalDescription(offer);
+                showToast('تم توليد رمز الاستضافة بنجاح');
+            } catch (err) {
+                showToast('تعذر إنشاء قناة الاتصال المحلية');
+            }
+        }
+
+        function prepareOfflineJoin() {
+            document.getElementById('webrtc-step-label').textContent = '1. الصق رمز المضيف في الأسفل ثم اضغط "تأكيد الربط" لتوليد رمز الرد:';
+            state.rtcPeer = new RTCPeerConnection({ iceServers: [] });
+            state.rtcPeer.ondatachannel = (e) => {
+                state.rtcDataChannel = e.channel;
+                setupRTCChannel(state.rtcDataChannel, false);
+            };
+            state.rtcPeer.onicecandidate = (e) => {
+                if (!e.candidate) {
+                    document.getElementById('webrtc-local-code').value = btoa(JSON.stringify(state.rtcPeer.localDescription));
+                }
+            };
+        }
+
+        async function completeWebRTCHandshake() {
+            const remoteText = document.getElementById('webrtc-remote-code').value.trim();
+            if (!remoteText) {
+                showToast('الرجاء لصق رمز صديقك أولاً');
+                return;
+            }
+            try {
+                const desc = JSON.parse(atob(remoteText));
+                if (!state.rtcPeer) prepareOfflineJoin();
+                await state.rtcPeer.setRemoteDescription(new RTCSessionDescription(desc));
+                if (desc.type === 'offer') {
+                    const answer = await state.rtcPeer.createAnswer();
+                    await state.rtcPeer.setLocalDescription(answer);
+                    document.getElementById('bt-status').textContent = 'انسخ رمز الرد أعلاه وأرسله للمضيف!';
+                }
+            } catch (e) {
+                showToast('رمز غير صالح، تأكد من نسخه كاملاً');
+            }
+        }
+
+        function copyWebRTCCode() {
+            const area = document.getElementById('webrtc-local-code');
+            area.select();
+            document.execCommand('copy');
+            showToast('تم نسخ رمز الربط المباشر');
+        }
+
+        function setupRTCChannel(channel, isHost) {
+            channel.onopen = () => {
+                document.getElementById('bt-status').textContent = '✅ متصل عبر الشبكة المحلية!';
+                showToast('تم الاتصال بصديقك بنجاح!');
+                closeModals();
+                const pName = document.getElementById('player-name-input').value.trim() || 'علاء الدين';
+                state.mode = 'bluetooth';
+                state.maxKingdoms = 4;
+                state.players = [
+                    { id: 0, name: isHost ? pName : 'المضيف', isHuman: isHost, hand: [], score: 0, roundScore: 0 },
+                    { id: 1, name: !isHost ? pName : 'صديق بلوتوث', isHuman: !isHost, hand: [], score: 0, roundScore: 0 },
+                    { id: 2, name: 'بوت 1', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                    { id: 3, name: 'بوت 2', isHuman: false, hand: [], score: 0, roundScore: 0 }
+                ];
+                if (isHost) initMatch();
+            };
+            channel.onmessage = (event) => {
+                const msg = JSON.parse(event.data);
+                if (msg.type === 'SYNC_STATE') {
+                    Object.assign(state, msg.payload);
+                    state.activeHumanSeat = 1;
+                    document.getElementById('main-menu').classList.add('hidden');
+                    document.getElementById('game-screen').classList.remove('hidden');
+                    renderAll();
+                } else if (msg.type === 'REMOTE_MOVE') {
+                    executeMove(msg.seat, msg.card);
+                }
+            };
+        }
+
+        /* ==================== وضع اللعب أونلاين (غرفة الإنترنت ورابط الدعوة) ==================== */
+        function checkUrlRoomParam() {
+            const params = new URLSearchParams(window.location.search);
+            const r = params.get('room');
+            if (r) {
+                openOnlineLobby(r.toUpperCase());
+            }
+        }
+
+        function openOnlineLobby(codeParam = null) {
+            const code = codeParam || Math.random().toString(36).substring(2, 6).toUpperCase();
+            state.roomCode = code;
+            document.getElementById('room-code-display').textContent = code;
+            document.getElementById('online-modal').classList.remove('hidden');
+
+            if (state.channel) state.channel.close();
+            state.channel = new BroadcastChannel('trix_online_' + code);
+
+            const myName = document.getElementById('player-name-input').value.trim() || 'علاء الدين';
+            updateOnlineSeatsUI([myName]);
+
+            state.channel.postMessage({ type: 'HELLO', name: myName });
+            state.channel.onmessage = (e) => {
+                if (e.data.type === 'HELLO') {
+                    updateOnlineSeatsUI([myName, e.data.name]);
+                    state.channel.postMessage({ type: 'WELCOME', host: myName });
+                } else if (e.data.type === 'WELCOME') {
+                    updateOnlineSeatsUI([e.data.host, myName]);
+                } else if (e.data.type === 'START_ONLINE') {
+                    state.mode = 'online';
+                    state.maxKingdoms = 4;
+                    state.players = e.data.players;
+                    state.activeHumanSeat = 1;
+                    closeModals();
+                    document.getElementById('main-menu').classList.add('hidden');
+                    document.getElementById('game-screen').classList.remove('hidden');
+                    dealCards();
+                }
+            };
+        }
+
+        function updateOnlineSeatsUI(names) {
+            const list = document.getElementById('online-seats-list');
+            list.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const isConnected = i < names.length;
+                list.innerHTML += `
+                    <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-800/90 border ${isConnected ? 'border-emerald-500/40' : 'border-slate-700'}">
+                        <span class="font-bold ${isConnected ? 'text-white' : 'text-slate-400'}">
+                            ${isConnected ? '🟢 ' + names[i] : '🤖 مقعد ذكاء اصطناعي احتياطي'}
+                        </span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-black/40 text-amber-300">مقعد ${i + 1}</span>
+                    </div>
+                `;
+            }
+        }
+
+        function copyRoomInvite() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('room', state.roomCode);
+            const tempInput = document.createElement('input');
+            tempInput.value = `انضم معي في لعبة التريكس (A+ GAMES)! رمز الغرفة: ${state.roomCode} - الرابط: ${url.toString()}`;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            document.getElementById('copy-feedback').textContent = 'تم نسخ رابط الدعوة ورمز الغرفة!';
+            setTimeout(() => document.getElementById('copy-feedback').textContent = '', 2500);
+        }
+
+        function joinExistingRoom() {
+            const code = document.getElementById('join-room-input').value.trim().toUpperCase();
+            if (code.length < 3) {
+                showToast('أدخل رمز غرفة صحيح');
+                return;
+            }
+            openOnlineLobby(code);
+            showToast(`تم الانضمام للغرفة ${code}`);
+        }
+
+        function startOnlineGame() {
+            const myName = document.getElementById('player-name-input').value.trim() || 'علاء الدين';
+            state.mode = 'online';
+            state.maxKingdoms = 4;
+            state.players = [
+                { id: 0, name: myName, isHuman: true, hand: [], score: 0, roundScore: 0 },
+                { id: 1, name: 'ضيف أونلاين', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 2, name: 'ماجد (Online)', isHuman: false, hand: [], score: 0, roundScore: 0 },
+                { id: 3, name: 'رنا (Online)', isHuman: false, hand: [], score: 0, roundScore: 0 }
+            ];
+            if (state.channel) {
+                state.channel.postMessage({ type: 'START_ONLINE', players: state.players });
+            }
+            closeModals();
+            initMatch();
+        }
+
+        /* ==================== منطق البطولة وتوزيع الأوراق ==================== */
+        function initMatch() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('game-over-banner').classList.add('hidden');
+
+            state.currentKingdomNum = 1;
+            state.usedContractsInKingdom = [];
+            state.history = [];
+            state.players.forEach(p => { p.score = 0; p.roundScore = 0; });
+
+            dealCards(true);
+        }
+
+        function createDeck() {
+            const deck = [];
+            for (const s of SUITS) {
+                for (const r of RANKS) {
+                    deck.push({
+                        suit: s.id,
+                        symbol: s.symbol,
+                        color: s.color,
+                        val: r.val,
+                        label: r.label,
+                        uid: `${r.label}_${s.id}`
+                    });
+                }
+            }
+            // خلط عشوائي Fisher-Yates
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        function sortHand(hand) {
+            const suitOrder = { hearts: 0, spades: 1, diamonds: 2, clubs: 3 };
+            return hand.sort((a, b) => {
+                if (suitOrder[a.suit] !== suitOrder[b.suit]) {
+                    return suitOrder[a.suit] - suitOrder[b.suit];
+                }
+                return b.val - a.val;
+            });
+        }
+
+        function dealCards(isFirstDeal = false) {
+            const deck = createDeck();
+            for (let i = 0; i < 4; i++) {
+                state.players[i].hand = sortHand(deck.slice(i * 13, (i + 1) * 13));
+                state.players[i].roundScore = 0;
+            }
+
+            // في بداية المملكة الأولى: صاحب 7 الكبة (7♥) هو مالك المملكة
+            if (isFirstDeal) {
+                const ownerIdx = state.players.findIndex(p => p.hand.some(c => c.suit === 'hearts' && c.val === 7));
+                state.kingdomOwner = ownerIdx !== -1 ? ownerIdx : 0;
+            }
+
+            state.trick = [];
+            state.leadSuit = null;
+            state.tricksPlayed = 0;
+            state.trexFinishOrder = [];
+            state.trexState = {
+                hearts: { min: null, max: null },
+                diamonds: { min: null, max: null },
+                clubs: { min: null, max: null },
+                spades: { min: null, max: null }
+            };
+
+            document.getElementById('hud-kingdom').textContent = `${state.currentKingdomNum} / ${state.maxKingdoms}`;
+            document.getElementById('hud-contract-badge').textContent = `مملكة: ${state.players[state.kingdomOwner].name}`;
+
+            state.activeHumanSeat = state.players[state.kingdomOwner].isHuman ? state.kingdomOwner : 0;
+            renderAll();
+            promptContractSelection();
+        }
+
+        /* ==================== اختيار العقد من قبل مالك المملكة ==================== */
+        function promptContractSelection() {
+            const owner = state.players[state.kingdomOwner];
+            const available = CONTRACTS.filter(c => !state.usedContractsInKingdom.includes(c.id));
+
+            if (owner.isHuman) {
+                if (state.mode === 'passplay' && state.activeHumanSeat !== owner.id) {
+                    showPrivacyCurtain(owner.id, () => openContractModal(available));
+                } else {
+                    state.activeHumanSeat = owner.id;
+                    renderAll();
+                    openContractModal(available);
+                }
+            } else {
+                // اختيار ذكي للعقد من قبل الذكاء الاصطناعي بناءً على أوراقه
+                setStatusToast(`🤔 ${owner.name} يختار العقد المناسب لأوراقه...`);
+                setTimeout(() => {
+                    const chosen = chooseBestAIContract(owner.hand, available);
+                    selectContract(chosen.id);
+                }, 1100);
+            }
+        }
+
+        function chooseBestAIContract(hand, available) {
+            const jacks = hand.filter(c => c.val === 11).length;
+            const queens = hand.filter(c => c.val === 12).length;
+            const diamonds = hand.filter(c => c.suit === 'diamonds').length;
+            const hasKingHearts = hand.some(c => c.suit === 'hearts' && c.val === 13);
+
+            if (available.some(c => c.id === 'trex') && jacks >= 2) return available.find(c => c.id === 'trex');
+            if (available.some(c => c.id === 'king_hearts') && !hasKingHearts) return available.find(c => c.id === 'king_hearts');
+            if (available.some(c => c.id === 'queens') && queens === 0) return available.find(c => c.id === 'queens');
+            if (available.some(c => c.id === 'diamonds') && diamonds <= 2) return available.find(c => c.id === 'diamonds');
+            return available[0];
+        }
+
+        function openContractModal(available) {
+            document.getElementById('remaining-contracts-count').textContent = available.length;
+            const container = document.getElementById('contract-options');
+            container.innerHTML = '';
+
+            available.forEach(c => {
+                container.innerHTML += `
+                    <button onclick="selectContract('${c.id}')" class="w-full p-3 rounded-2xl bg-gradient-to-r ${c.color} hover:brightness-110 border border-white/20 flex items-center justify-between text-right shadow-lg transition transform active:scale-95">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">${c.icon}</span>
+                            <div>
+                                <div class="font-black text-white text-sm sm:text-base">${c.name}</div>
+                                <div class="text-[11px] text-white/80">${c.desc}</div>
+                            </div>
+                        </div>
+                        <span class="text-white/90 font-bold text-xs bg-black/30 px-2.5 py-1 rounded-lg">اختيار ◀</span>
+                    </button>
+                `;
+            });
+
+            document.getElementById('contract-modal').classList.remove('hidden');
+        }
+
+        function selectContract(contractId) {
+            document.getElementById('contract-modal').classList.add('hidden');
+            sfxTrickWin();
+
+            state.currentContract = CONTRACTS.find(c => c.id === contractId);
+            state.usedContractsInKingdom.push(contractId);
+            state.turn = state.kingdomOwner;
+
+            document.getElementById('hud-contract-badge').textContent =
+                `${state.currentContract.icon} عقد ${state.currentContract.name} (${state.players[state.kingdomOwner].name})`;
+
+            const isTrex = contractId === 'trex';
+            document.getElementById('trick-area').classList.toggle('hidden', isTrex);
+            document.getElementById('trex-board').classList.toggle('hidden', !isTrex);
+
+            syncBluetoothIfNeeded();
+            startTurn();
+        }
+
+        /* ==================== إدارة الأدوار وقواعد اللعب ==================== */
+        function getValidCards(playerIndex) {
+            const hand = state.players[playerIndex].hand;
+            if (hand.length === 0) return [];
+
+            // 1. قواعد عقد التريكس
+            if (state.currentContract.id === 'trex') {
+                return hand.filter(card => {
+                    const s = state.trexState[card.suit];
+                    if (s.min === null) {
+                        return card.val === 11; // الولد (J) يبدأ السلسلة
+                    }
+                    return card.val === s.min - 1 || card.val === s.max + 1;
+                });
+            }
+
+            // 2. قواعد العقود الأربعة الأخرى (اللطوش، البنات، الديناري، شيخ الكبة)
+            if (state.trick.length === 0) {
+                return hand; // البادئ يلعب أي ورقة
+            }
+
+            const sameSuit = hand.filter(c => c.suit === state.leadSuit);
+            return sameSuit.length > 0 ? sameSuit : hand;
+        }
+
+        function startTurn() {
+            highlightActivePlayer();
+            const currentPlayer = state.players[state.turn];
+
+            // في التريكس، تخطي اللاعب الذي أنهى أوراقه
+            if (state.currentContract.id === 'trex' && currentPlayer.hand.length === 0) {
+                advanceTrexTurn();
+                return;
+            }
+
+            const validCards = getValidCards(state.turn);
+
+            if (currentPlayer.isHuman) {
+                if (state.mode === 'passplay' && state.activeHumanSeat !== state.turn) {
+                    showPrivacyCurtain(state.turn, () => {
+                        state.activeHumanSeat = state.turn;
+                        renderAll();
+                        checkHumanTrexPass(validCards);
+                    });
+                } else {
+                    state.activeHumanSeat = state.turn;
+                    renderAll();
+                    checkHumanTrexPass(validCards);
+                }
+            } else {
+                // دور الذكاء الاصطناعي
+                document.getElementById('trex-pass-btn').classList.add('hidden');
+                setStatusToast(`دور ${currentPlayer.name}...`);
+                setTimeout(() => {
+                    playAIMove(state.turn, validCards);
+                }, 650);
+            }
+        }
+
+        function checkHumanTrexPass(validCards) {
+            const passBtn = document.getElementById('trex-pass-btn');
+            if (state.currentContract.id === 'trex' && validCards.length === 0) {
+                setStatusToast('لا تملك ورقة صالحة! اضغط على تمرير الدور');
+                passBtn.classList.remove('hidden');
+            } else {
+                setStatusToast(`دورك الآن يا ${state.players[state.turn].name}`);
+                passBtn.classList.add('hidden');
+            }
+        }
+
+        function humanPassTrex() {
+            if (state.turn !== state.activeHumanSeat) return;
+            document.getElementById('trex-pass-btn').classList.add('hidden');
+            sfxCardPlay();
+            showToast(`${state.players[state.turn].name} مرّر الدور`);
+            advanceTrexTurn();
+        }
+
+        function onHumanCardClick(uid) {
+            if (state.isBusy || state.turn !== state.activeHumanSeat) return;
+            const player = state.players[state.turn];
+            const card = player.hand.find(c => c.uid === uid);
+            if (!card) return;
+
+            const valid = getValidCards(state.turn);
+            if (!valid.some(c => c.uid === uid)) {
+                showToast('⚠️ هذه الورقة غير مسموحة حسب قوانين العقد!');
+                return;
+            }
+
+            document.getElementById('trex-pass-btn').classList.add('hidden');
+            executeMove(state.turn, card);
+        }
+
+        function playAIMove(seat, validCards) {
+            if (state.currentContract.id === 'trex') {
+                if (validCards.length === 0) {
+                    setStatusToast(`${state.players[seat].name} مرّر الدور`);
+                    advanceTrexTurn();
+                    return;
+                }
+                // الذكاء الاصطناعي يفضل التخلص من الأوراق البعيدة عن الولد (2 أو A)
+                validCards.sort((a, b) => Math.abs(b.val - 11) - Math.abs(a.val - 11));
+                executeMove(seat, validCards[0]);
+                return;
+            }
+
+            // ذكاء اصطناعي للعقود السلبية
+            let chosen;
+            if (state.trick.length === 0) {
+                // البدء بأصغر ورقة آمنة
+                chosen = [...validCards].sort((a, b) => a.val - b.val)[0];
+            } else {
+                const highestOnTable = Math.max(...state.trick.filter(t => t.card.suit === state.leadSuit).map(t => t.card.val));
+                const underCards = validCards.filter(c => c.suit === state.leadSuit && c.val < highestOnTable);
+                if (underCards.length > 0) {
+                    // اللعب تحت الورقة العالية لتجنب أخذ الأكلة
+                    chosen = underCards.sort((a, b) => b.val - a.val)[0];
+                } else if (validCards[0].suit !== state.leadSuit) {
+                    // التخلص من شيخ الكبة أو البنات أو الديناري العالي
+                    const kh = validCards.find(c => c.suit === 'hearts' && c.val === 13);
+                    const q = validCards.find(c => c.val === 12);
+                    chosen = kh || q || [...validCards].sort((a, b) => b.val - a.val)[0];
+                } else {
+                    chosen = [...validCards].sort((a, b) => a.val - b.val)[0];
+                }
+            }
+            executeMove(seat, chosen);
+        }
+
+        function executeMove(seat, card) {
+            state.isBusy = true;
+            sfxCardPlay();
+
+            // إزالة الورقة من يد اللاعب
+            const p = state.players[seat];
+            p.hand = p.hand.filter(c => c.uid !== card.uid);
+
+            if (state.currentContract.id === 'trex') {
+                const s = state.trexState[card.suit];
+                if (s.min === null) {
+                    s.min = 11;
+                    s.max = 11;
+                } else if (card.val < s.min) {
+                    s.min = card.val;
+                } else if (card.val > s.max) {
+                    s.max = card.val;
+                }
+
+                renderAll();
+
+                // فحص إذا أنهى اللاعب جميع أوراقه في التريكس
+                if (p.hand.length === 0 && !state.trexFinishOrder.includes(seat)) {
+                    state.trexFinishOrder.push(seat);
+                    const rankPts = [200, 150, 100, 50][state.trexFinishOrder.length - 1];
+                    p.roundScore += rankPts;
+                    p.score += rankPts;
+                    sfxTrickWin();
+                    showToast(`🎉 ${p.name} أنهى أوراقه في المركز ${state.trexFinishOrder.length} (+${rankPts})`);
+                }
+
+                syncBluetoothIfNeeded();
+                state.isBusy = false;
+
+                if (state.trexFinishOrder.length >= 3) {
+                    // الرابع يأخذ +50 تلقائياً وتنتهي الجولة
+                    const lastSeat = [0, 1, 2, 3].find(idx => !state.trexFinishOrder.includes(idx));
+                    if (lastSeat !== undefined) {
+                        state.players[lastSeat].roundScore += 50;
+                        state.players[lastSeat].score += 50;
+                    }
+                    endRound();
+                } else {
+                    advanceTrexTurn();
+                }
+                return;
+            }
+
+            // منطق العقود الأخرى (اللطوش، البنات، الديناري، شيخ الكبة)
+            if (state.trick.length === 0) {
+                state.leadSuit = card.suit;
+            }
+            state.trick.push({ playerIndex: seat, card });
+            renderAll();
+            syncBluetoothIfNeeded();
+
+            if (state.trick.length < 4) {
+                state.turn = (state.turn + 1) % 4;
+                state.isBusy = false;
+                startTurn();
+            } else {
+                // تقييم الأكلة بعد اكتمال 4 أوراق
+                setTimeout(() => evaluateTrick(), 850);
+            }
+        }
+
+        function advanceTrexTurn() {
+            state.turn = (state.turn + 1) % 4;
+            startTurn();
+        }
+
+        function evaluateTrick() {
+            let winnerEntry = state.trick[0];
+            for (const entry of state.trick) {
+                if (entry.card.suit === state.leadSuit && entry.card.val > winnerEntry.card.val) {
+                    winnerEntry = entry;
+                }
+            }
+
+            const winnerIdx = winnerEntry.playerIndex;
+            let penalty = 0;
+
+            if (state.currentContract.id === 'collections') {
+                penalty = -15;
+            } else if (state.currentContract.id === 'queens') {
+                const qCount = state.trick.filter(t => t.card.val === 12).length;
+                penalty = qCount * -25;
+            } else if (state.currentContract.id === 'diamonds') {
+                const dCount = state.trick.filter(t => t.card.suit === 'diamonds').length;
+                penalty = dCount * -10;
+            } else if (state.currentContract.id === 'king_hearts') {
+                const hasKH = state.trick.some(t => t.card.suit === 'hearts' && t.card.val === 13);
+                penalty = hasKH ? -75 : 0;
+            }
+
+            state.players[winnerIdx].roundScore += penalty;
+            state.players[winnerIdx].score += penalty;
+
+            if (penalty < 0) {
+                sfxPenalty();
+                showToast(`${state.players[winnerIdx].name} أخذ اللطشة (${penalty} نقطة)`);
+            } else {
+                sfxTrickWin();
+            }
+
+            state.trick = [];
+            state.leadSuit = null;
+            state.tricksPlayed++;
+            state.turn = winnerIdx;
+            state.isBusy = false;
+            renderAll();
+
+            // هل انتهت الجولة (13 لطشة أو انتهت أوراق العقد)؟
+            const earlyEnd =
+                (state.currentContract.id === 'king_hearts' && penalty === -75) ||
+                (state.currentContract.id === 'queens' && state.players.reduce((a, b) => a + b.roundScore, 0) === -100) ||
+                (state.currentContract.id === 'diamonds' && state.players.reduce((a, b) => a + b.roundScore, 0) === -130);
+
+            if (state.tricksPlayed >= 13 || earlyEnd) {
+                endRound();
+            } else {
+                startTurn();
+            }
+        }
+
+        function endRound() {
+            state.history.push({
+                contractName: `${state.currentContract.icon} ${state.currentContract.name}`,
+                scores: state.players.map(p => p.roundScore)
+            });
+
+            renderAll();
+            openScoreboard();
+
+            // الانتقال للعقد التالي أو المملكة التالية
+            setTimeout(() => {
+                if (state.usedContractsInKingdom.length < 5) {
+                    closeScoreboard();
+                    dealCards(false);
+                } else if (state.currentKingdomNum < state.maxKingdoms) {
+                    closeScoreboard();
+                    state.currentKingdomNum++;
+                    state.usedContractsInKingdom = [];
+                    state.kingdomOwner = (state.kingdomOwner + 1) % 4;
+                    showToast(`👑 بدأت المملكة ${state.currentKingdomNum} لصاحبها ${state.players[state.kingdomOwner].name}`);
+                    dealCards(false);
+                } else {
+                    // نهاية البطولة بالكامل
+                    const sorted = [...state.players].sort((a, b) => b.score - a.score);
+                    document.getElementById('winner-announcement').textContent =
+                        `🏆 البطل: ${sorted[0].name} برصيد (${sorted[0].score}) نقطة!`;
+                    document.getElementById('game-over-banner').classList.remove('hidden');
+                    sfxTrickWin();
+                }
+            }, 2600);
+        }
+
+        /* ==================== ستار الخصوصية لتمرير الهاتف ==================== */
+        function showPrivacyCurtain(nextSeat, callback) {
+            document.getElementById('next-human-name').textContent = state.players[nextSeat].name;
+            const curtain = document.getElementById('privacy-curtain');
+            curtain.classList.remove('hidden');
+            curtain._onReveal = callback;
+        }
+
+        function revealNextHumanHand() {
+            const curtain = document.getElementById('privacy-curtain');
+            curtain.classList.add('hidden');
+            if (curtain._onReveal) curtain._onReveal();
+        }
+
+        /* ==================== رسم واجهة الطاولة والأوراق ==================== */
+        function setStatusToast(msg) {
+            document.getElementById('table-status-toast').textContent = msg;
+        }
+
+        function highlightActivePlayer() {
+            for (let i = 0; i < 4; i++) {
+                const visualIdx = (i - state.activeHumanSeat + 4) % 4;
+                const badge = document.getElementById(`badge-${visualIdx}`);
+                if (i === state.turn) {
+                    badge.classList.add('ring-2', 'ring-amber-400', 'bg-amber-950/90', 'scale-105');
+                } else {
+                    badge.classList.remove('ring-2', 'ring-amber-400', 'bg-amber-950/90', 'scale-105');
+                }
+            }
+        }
+
+        function renderAll() {
+            const base = state.activeHumanSeat;
+
+            // تحديث أسماء ونقاط المقاعد الأربعة نسبة للاعب النشط بالأسفل
+            for (let v = 0; v < 4; v++) {
+                const actualSeat = (base + v) % 4;
+                const p = state.players[actualSeat];
+                document.getElementById(`name-${v}`).textContent = p.name;
+                document.getElementById(`score-${v}`).textContent = p.score;
+
+                if (v > 0) {
+                    const miniHand = document.getElementById(`hand-${v}`);
+                    miniHand.innerHTML = '';
+                    const count = Math.min(p.hand.length, 7);
+                    for (let k = 0; k < count; k++) {
+                        miniHand.innerHTML += `<div class="card-back ${v === 2 ? 'w-6 h-8' : 'w-8 h-5'}"></div>`;
+                    }
+                }
+            }
+
+            // رسم أوراق اللاعب السفلي (مروحة تفاعلية)
+            const handContainer = document.getElementById('player-hand');
+            handContainer.innerHTML = '';
+            const myHand = state.players[base].hand;
+            const validCards = (state.turn === base && state.currentContract) ? getValidCards(base) : [];
+            const total = myHand.length;
+
+            myHand.forEach((card, idx) => {
+                const isPlayable = validCards.some(vc => vc.uid === card.uid);
+                const mid = (total - 1) / 2;
+                const offset = idx - mid;
+                const angle = offset * 3.2;
+                const translateY = Math.abs(offset) * 2.2;
+                const overlap = total > 9 ? '-ml-5 sm:-ml-6' : '-ml-3 sm:-ml-4';
+
+                const cardEl = document.createElement('div');
+                cardEl.className = `playing-card w-16 h-24 sm:w-20 sm:h-32 p-1.5 sm:p-2 ${idx > 0 ? overlap : ''} ${
+                    state.turn === base && state.currentContract ? (isPlayable ? 'playable' : 'unplayable') : ''
+                }`;
+                cardEl.style.transform = `rotate(${angle}deg) translateY(${translateY}px)`;
+                cardEl.style.zIndex = idx + 1;
+                cardEl.onclick = () => onHumanCardClick(card.uid);
+
+                cardEl.innerHTML = `
+                    <div class="flex flex-col items-start leading-none ${card.color}">
+                        <span class="text-sm sm:text-lg font-black">${card.label}</span>
+                        <span class="text-xs sm:text-base">${card.symbol}</span>
+                    </div>
+                    <div class="text-center text-2xl sm:text-4xl ${card.color} my-auto">
+                        ${card.symbol}
+                    </div>
+                    <div class="flex flex-col items-end leading-none rotate-180 ${card.color}">
+                        <span class="text-sm sm:text-lg font-black">${card.label}</span>
+                        <span class="text-xs sm:text-base">${card.symbol}</span>
+                    </div>
+                `;
+                handContainer.appendChild(cardEl);
+            });
+
+            // رسم الأوراق الملعوبة في المنتصف
+            for (let v = 0; v < 4; v++) {
+                document.getElementById(`played-card-${v}`).innerHTML = '';
+            }
+            state.trick.forEach(entry => {
+                const vSeat = (entry.playerIndex - base + 4) % 4;
+                const c = entry.card;
+                document.getElementById(`played-card-${vSeat}`).innerHTML = `
+                    <div class="playing-card card-thrown w-14 h-20 sm:w-16 sm:h-24 p-1.5 border border-slate-300">
+                        <div class="flex flex-col items-start leading-none ${c.color}">
+                            <span class="text-xs sm:text-sm font-black">${c.label}</span>
+                            <span class="text-xs">${c.symbol}</span>
+                        </div>
+                        <div class="text-center text-xl sm:text-2xl ${c.color} my-auto">${c.symbol}</div>
+                    </div>
+                `;
+            });
+
+            // رسم لوحة عقد التريكس
+            if (state.currentContract && state.currentContract.id === 'trex') {
+                renderTrexBoard();
+            }
+        }
+
+        function renderTrexBoard() {
+            const cols = document.getElementById('trex-columns');
+            cols.innerHTML = '';
+            SUITS.forEach(s => {
+                const st = state.trexState[s.id];
+                const maxLabel = st.max ? RANKS.find(r => r.val === st.max).label : '-';
+                const minLabel = st.min ? RANKS.find(r => r.val === st.min).label : '-';
+                const hasJack = st.min !== null;
+
+                cols.innerHTML += `
+                    <div class="bg-slate-900/95 rounded-xl p-2 border ${hasJack ? 'border-amber-400/60' : 'border-slate-800'} flex flex-col items-center gap-1">
+                        <span class="text-lg sm:text-xl ${s.color === 'text-red-600' ? 'text-red-500' : 'text-sky-300'}">${s.symbol}</span>
+                        <div class="w-full py-1 rounded bg-emerald-950/70 text-[11px] font-black text-emerald-300">
+                            أعلى: ${maxLabel}
+                        </div>
+                        <div class="w-full py-1.5 rounded bg-white text-center font-black text-xs sm:text-sm ${s.color}">
+                            ${hasJack ? 'J ' + s.symbol : 'بانتظار J'}
+                        </div>
+                        <div class="w-full py-1 rounded bg-amber-950/70 text-[11px] font-black text-amber-300">
+                            أدنى: ${minLabel}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        /* ==================== ورقة التسجيل ==================== */
+        function openScoreboard() {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`sb-p${i}`).textContent = state.players[i].name;
+                document.getElementById(`sb-tot${i}`).textContent = state.players[i].score;
+            }
+            const tbody = document.getElementById('scoreboard-body');
+            tbody.innerHTML = '';
+            state.history.forEach(row => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2 font-bold text-amber-200">${row.contractName}</td>
+                        ${row.scores.map(sc => `<td class="p-2 font-bold ${sc < 0 ? 'text-red-400' : 'text-emerald-400'}">${sc}</td>`).join('')}
+                    </tr>
+                `;
+            });
+            document.getElementById('scoreboard-modal').classList.remove('hidden');
+        }
+
+        function closeScoreboard() {
+            document.getElementById('scoreboard-modal').classList.add('hidden');
+        }
+
+        function syncBluetoothIfNeeded() {
+            if (state.mode === 'bluetooth' && state.rtcDataChannel && state.rtcDataChannel.readyState === 'open') {
+                const payload = {
+                    currentKingdomNum: state.currentKingdomNum,
+                    kingdomOwner: state.kingdomOwner,
+                    currentContract: state.currentContract,
+                    players: state.players,
+                    turn: state.turn,
+                    trick: state.trick,
+                    leadSuit: state.leadSuit,
+                    trexState: state.trexState,
+                    history: state.history
+                };
+                state.rtcDataChannel.send(JSON.stringify({ type: 'SYNC_STATE', payload }));
+            }
+        }
+    </script>
+</body>
+</html>
